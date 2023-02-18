@@ -49,7 +49,7 @@ public class add_books extends HttpServlet {
     String url = "jdbc:mysql://localhost:3306/library";
     String username = "root";
     String password = "password";
-    String query = "INSERT INTO books, (title, author, isbn, pub_date, publisher),  
+    String query = "INSERT INTO books, (title, author, isbn, pub_date, publisher)",  
                    "VALUES (?, ?, ?, ?, ?)";
 
     try (Connection conn = (Connection) DriverManager.getConnection(url, username, password);
