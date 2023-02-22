@@ -50,7 +50,7 @@ public class add_books extends HttpServlet {
     String publisher = request.getParameter("publisher");
 
     // insert data into database
-    String url = "jdbc:mysql://localhost:3306/Lib_management_in_mysql";
+    String url = "jdbc:mysql://localhost:3306/library_management?zeroDateTimeBehavior=CONVERT_TO_NULL";
     String username = "root";
     String query = "INSERT INTO Lib_management_in_mysql.books (title, author, isbn, pub_date, publisher)";
 
