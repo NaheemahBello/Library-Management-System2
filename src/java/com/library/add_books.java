@@ -9,10 +9,14 @@ import jakarta.jms.JMSException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import static java.lang.System.out;
 import java.sql.*;
+
+
 
 
 
@@ -20,6 +24,8 @@ import java.sql.*;
  *
  * @author user
  */
+@WebServlet(name="add_books", urlPatterns={"/add_books"})
+
 public class add_books extends HttpServlet {
 
     /**
@@ -30,13 +36,11 @@ public class add_books extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws jakarta.jms.JMSException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, JMSException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-           
 
    // read form data
     String title = request.getParameter("title");
@@ -46,29 +50,30 @@ public class add_books extends HttpServlet {
     String publisher = request.getParameter("publisher");
 
     // insert data into database
-    String url = "jdbc:mysql://localhost:3306/library";
+    String url = "jdbc:mysql://localhost:3306/Lib_management_in_mysql";
     String username = "root";
-    String password = "password";
-    String query = "INSERT INTO books, (title, author, isbn, pub_date, publisher)",  
-                   "VALUES (?, ?, ?, ?, ?)";
+    String query = "INSERT INTO Lib_management_in_mysql (title, author, isbn, pub_date, publisher)VALUES (?, ?, ?, ?, ?)";
 
-    try (Connection conn = (Connection) DriverManager.getConnection(url, username, password);
-         PreparedStatement stmt = conn.preparedStatement(query)) {
+    try (Connection conn = (Connection) DriverManager.getConnection(url, username);
+         PreparedStatement stmt = conn.prepareStatement(query)) {
         stmt.setString(1, title);
         stmt.setString(2, author);
         stmt.setString(3, isbn);
         stmt.setString(4, pubDate);
         stmt.setString(5, publisher);
 
-        stmt.executeUpdate();
+        stmt.execute();
 
         out.println("Book added successfully!");
     } catch (SQLException e) {
         out.println("Error adding book: " + e.getMessage());
+    } finally {
+        // close the connection
+        conn.close();
     }
 
 
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
