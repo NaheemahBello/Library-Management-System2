@@ -52,7 +52,7 @@ public class add_books extends HttpServlet {
     // insert data into database
     String url = "jdbc:mysql://localhost:3306/Lib_management_in_mysql";
     String username = "root";
-    String query = "INSERT INTO Lib_management_in_mysql (title, author, isbn, pub_date, publisher)VALUES (?, ?, ?, ?, ?)";
+    String query = "INSERT INTO Lib_management_in_mysql.books (title, author, isbn, pub_date, publisher)VALUES (?, ?, ?, ?, ?)";
 
     try (Connection conn = (Connection) DriverManager.getConnection(url, username);
          PreparedStatement stmt = conn.prepareStatement(query)) {
